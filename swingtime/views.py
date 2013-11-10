@@ -317,19 +317,17 @@ def json_feed(request):
     response_data = [
         {
             'id': occ.id,
-            'title': (
-                "{}: {}".format(occ.event.case, occ.event.title)
-                if occ.event.case else
-                occ.event.title
-                ),
+            'title': ("{}: {}".format(occ.event.case, occ.event.title)
+                      if occ.event.case else
+                      occ.event.title
+                      ),
             'start': time_mod.mktime(occ.start_time.timetuple()),
             'end': time_mod.mktime(occ.end_time.timetuple()),
             'url': reverse('swingtime-event', args=(occ.event.id,)),
             'allDay': False,
-            'case': {
-                'id': occ.event.case.id,
-                'title': unicode(occ.event.case)
-                } if occ.event.case else None,
+            'case': {'id': occ.event.case.id,
+                     'title': unicode(occ.event.case)
+                     } if occ.event.case else None,
         }
         for occ in qs
     ]

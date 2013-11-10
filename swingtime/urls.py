@@ -2,6 +2,7 @@ from django.conf.urls import patterns, url
 from swingtime import views
 
 urlpatterns = patterns('',
+
     url(
         r'^(?:calendar/)?$',
         views.calendar_view,

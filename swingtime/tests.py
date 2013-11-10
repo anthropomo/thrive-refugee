@@ -62,6 +62,7 @@ expected_table_5 = '''\
 | 16:30 | alpha    | bravo    | foxtrot  | charlie  | delta    |
 '''
 
+
 #===============================================================================
 class TableTest(TestCase):
 
@@ -69,7 +70,7 @@ class TableTest(TestCase):
 
     #---------------------------------------------------------------------------
     def setUp(self):
-        self._dt = dt = datetime(2008,12,11)
+        self._dt = dt = datetime(2008, 12, 11)
 
     #---------------------------------------------------------------------------
     def table_as_string(self, table):
@@ -84,7 +85,7 @@ class TableTest(TestCase):
                 else:
                     print >> out, cellfmt % '',
             print >> out, '|'
-            
+
         return out.getvalue()
 
     #---------------------------------------------------------------------------
@@ -104,34 +105,34 @@ class TableTest(TestCase):
 
     #---------------------------------------------------------------------------
     def test_slot_table_1(self):
-        self._do_test((15,0), (18,0), expected_table_1)
+        self._do_test((15, 0), (18, 0), expected_table_1)
 
     #---------------------------------------------------------------------------
     def test_slot_table_2(self):
-        self._do_test((15,30), (17,30), expected_table_2)
+        self._do_test((15, 30), (17, 30), expected_table_2)
 
     #---------------------------------------------------------------------------
     def test_slot_table_3(self):
-        self._do_test((16,0), (17,30), expected_table_3)
+        self._do_test((16, 0), (17, 30), expected_table_3)
 
     #---------------------------------------------------------------------------
     def test_slot_table_4(self):
-        self._do_test((18,0), (19,30), expected_table_4)
+        self._do_test((18, 0), (19, 30), expected_table_4)
 
     #---------------------------------------------------------------------------
     def test_slot_table_5(self):
-        self._do_test((16,30), (16,30), expected_table_5)
+        self._do_test((16, 30), (16, 30), expected_table_5)
 
 
 #===============================================================================
 class NewEventFormTest(TestCase):
 
     fixtures = ['swingtime_test']
-    
+
     #---------------------------------------------------------------------------
     def test_new_event_simple(self):
         from swingtime.forms import EventForm, MultipleOccurrenceForm
-        
+
         data = dict(
             title='QWERTY',
             event_type='1',
@@ -148,17 +149,18 @@ class NewEventFormTest(TestCase):
             occurences='2',
             month_ordinal='1'
         )
-        
+
         evt_form = EventForm(data)
         occ_form = MultipleOccurrenceForm(data)
         self.assertTrue(evt_form.is_valid(), evt_form.errors.as_text())
         self.assertTrue(occ_form.is_valid(), occ_form.errors.as_text())
-        
+
         self.assertEqual(
             occ_form.cleaned_data['start_time'],
             datetime(2008, 12, 11, 8),
             'Bad start_time: %s' % pformat(occ_form.cleaned_data)
         )
+
 
 #-------------------------------------------------------------------------------
 def doc_tests():
@@ -188,7 +190,7 @@ def doc_tests():
         ... )
         >>> for o in e.occurrence_set.all():
         ...     print o.start_time, o.end_time
-        ... 
+        ...
         2008-12-02 12:00:00 2008-12-02 13:00:00
         2008-12-04 12:00:00 2008-12-04 13:00:00
         2008-12-09 12:00:00 2008-12-09 13:00:00

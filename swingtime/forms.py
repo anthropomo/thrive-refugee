@@ -37,30 +37,30 @@ WEEKDAY_LONG = (
 )
 
 MONTH_LONG = (
-    (1,  _(u'January')),
-    (2,  _(u'February')),
-    (3,  _(u'March')),
-    (4,  _(u'April')),
-    (5,  _(u'May')),
-    (6,  _(u'June')),
-    (7,  _(u'July')),
-    (8,  _(u'August')),
-    (9,  _(u'September')),
+    (1, _(u'January')),
+    (2, _(u'February')),
+    (3, _(u'March')),
+    (4, _(u'April')),
+    (5, _(u'May')),
+    (6, _(u'June')),
+    (7, _(u'July')),
+    (8, _(u'August')),
+    (9, _(u'September')),
     (10, _(u'October')),
     (11, _(u'November')),
     (12, _(u'December')),
 )
 
 MONTH_SHORT = (
-    (1,  _(u'Jan')),
-    (2,  _(u'Feb')),
-    (3,  _(u'Mar')),
-    (4,  _(u'Apr')),
-    (5,  _(u'May')),
-    (6,  _(u'Jun')),
-    (7,  _(u'Jul')),
-    (8,  _(u'Aug')),
-    (9,  _(u'Sep')),
+    (1, _(u'Jan')),
+    (2, _(u'Feb')),
+    (3, _(u'Mar')),
+    (4, _(u'Apr')),
+    (5, _(u'May')),
+    (6, _(u'Jun')),
+    (7, _(u'Jul')),
+    (8, _(u'Aug')),
+    (9, _(u'Sep')),
     (10, _(u'Oct')),
     (11, _(u'Nov')),
     (12, _(u'Dec')),
@@ -68,18 +68,18 @@ MONTH_SHORT = (
 
 
 ORDINAL = (
-    (1,  _(u'first')),
-    (2,  _(u'second')),
-    (3,  _(u'third')),
-    (4,  _(u'fourth')),
+    (1, _(u'first')),
+    (2, _(u'second')),
+    (3, _(u'third')),
+    (4, _(u'fourth')),
     (-1, _(u'last'))
 )
 
 FREQUENCY_CHOICES = (
-    (rrule.DAILY,   _(u'Day(s)')),
-    (rrule.WEEKLY,  _(u'Week(s)')),
+    (rrule.DAILY, _(u'Day(s)')),
+    (rrule.WEEKLY, _(u'Week(s)')),
     (rrule.MONTHLY, _(u'Month(s)')),
-    (rrule.YEARLY,  _(u'Year(s)')),
+    (rrule.YEARLY, _(u'Year(s)')),
 )
 
 REPEAT_CHOICES = (
@@ -100,6 +100,7 @@ ISO_WEEKDAYS_MAP = (
 
 MINUTES_INTERVAL = swingtime_settings.TIMESLOT_INTERVAL.seconds // 60
 SECONDS_INTERVAL = utils.time_delta_total_seconds(swingtime_settings.DEFAULT_OCCURRENCE_DURATION)
+
 
 #-------------------------------------------------------------------------------
 def timeslot_options(
@@ -125,6 +126,7 @@ def timeslot_options(
         dtstart += interval
 
     return options
+
 
 #-------------------------------------------------------------------------------
 def timeslot_offset_options(
@@ -168,7 +170,7 @@ class MultipleIntegerField(forms.MultipleChoiceField):
     #---------------------------------------------------------------------------
     def __init__(self, choices, size=None, label=None, widget=None):
         if widget is None:
-            widget = forms.SelectMultiple(attrs={'size' : size or len(choices)})
+            widget = forms.SelectMultiple(attrs={'size': size or len(choices)})
         super(MultipleIntegerField, self).__init__(
             required=False,
             choices=choices,
@@ -268,7 +270,7 @@ class MultipleOccurrenceForm(forms.Form):
 
     # monthly  options
     month_option = forms.ChoiceField(
-        choices=(('on',_(u'On the')), ('each',_(u'Each:'))),
+        choices=(('on', _(u'On the')), ('each', _(u'Each:'))),
         initial='each',
         widget=forms.RadioSelect(),
         label=_(u'Monthly options')
@@ -277,7 +279,7 @@ class MultipleOccurrenceForm(forms.Form):
     month_ordinal = forms.IntegerField(widget=forms.Select(choices=ORDINAL))
     month_ordinal_day = forms.IntegerField(widget=forms.Select(choices=WEEKDAY_LONG))
     each_month_day = MultipleIntegerField(
-        [(i,i) for i in range(1,32)],
+        [(i, i) for i in range(1, 32)],
         widget=forms.CheckboxSelectMultiple
     )
 

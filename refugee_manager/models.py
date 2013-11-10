@@ -25,6 +25,7 @@ class Volunteer(models.Model):
         return '%s %s (%s%s)' % (self.user.first_name, self.user.last_name,
                                  inactive, self.user.username)
 
+
 class CaseQuerySet(models.query.QuerySet):
     def for_user(self, user):
         if user.is_superuser:
@@ -36,10 +37,11 @@ class CaseQuerySet(models.query.QuerySet):
                 rv = self.none()
         return rv
 
+
 class CaseManager(models.Manager):
     # also used by EmploymentClient
-    
     use_for_related_fields = True
+
     def get_query_set(self):
         return CaseQuerySet(self.model)
 

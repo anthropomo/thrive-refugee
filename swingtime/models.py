@@ -59,18 +59,21 @@ class EventQuerySet(models.query.QuerySet):
                     Q(refugee_case__volunteers=user.volunteer)
                     | Q(employment_case__volunteers=user.volunteer)
                     | Q(refugee_case=None, employment_case=None)
-                    )
+                )
             except Volunteer.DoesNotExist:
                 rv = self.filter(refugee_case=None, employment_case=None)
         return rv
 
+
 class EventManager(models.Manager):
     use_for_related_fields = True
+
     def get_query_set(self):
         return EventQuerySet(self.model)
-        
+
     def for_user(self, user):
         return self.get_query_set().for_user(user)
+
 
 class AutoCase(object):
     def __get__(self, obj, type=None):
@@ -82,7 +85,7 @@ class AutoCase(object):
         if rv is None:
             rv = obj.employment_case
         return rv
-    
+
     def __set__(self, obj, value):
         if value is None:
             obj.refugee_case = None
@@ -95,7 +98,7 @@ class AutoCase(object):
             obj.employment_case = value
         else:
             raise TypeError("Case cannot be a {} object".format(type(value).__name__))
-    
+
 
 #===============================================================================
 class Event(models.Model):
@@ -107,21 +110,21 @@ class Event(models.Model):
     event_type = models.ForeignKey(EventType, verbose_name=_('event type'), null=True, blank=True)
     refugee_case = models.ForeignKey(refugee_models.Case, null=True, blank=True, db_index=True)
     employment_case = models.ForeignKey(employment_models.EmploymentClient, null=True, blank=True, db_index=True)
-    
+
     case = AutoCase()
-    
+
     objects = EventManager()
 
     #===========================================================================
     class Meta:
         verbose_name = _('event')
         verbose_name_plural = _('events')
-        ordering = ('title', )
-    
+        ordering = ('title',)
+
     def clean(self):
         if self.refugee_case and self.employment_case:
             raise ValidationError("Cannot have both a Refugee and Employment case")
-    
+
     #---------------------------------------------------------------------------
     def __unicode__(self):
         return self.title
@@ -213,7 +216,7 @@ class OccurrenceQuerySet(models.query.QuerySet):
         )
 
         return qs.filter(event=event) if event else qs
-    
+
     def for_user(self, user):
         if user.is_superuser:
             rv = self
@@ -223,21 +226,24 @@ class OccurrenceQuerySet(models.query.QuerySet):
                     Q(event__refugee_case__volunteers=user.volunteer)
                     | Q(event__employment_case__volunteers=user.volunteer)
                     | Q(event__refugee_case=None, employment_case=None)
-                    )
+                )
             except Volunteer.DoesNotExist:
                 rv = self.filter(event__refugee_case=None, employment_case=None)
         return rv
 
+
 class OccurrenceManager(models.Manager):
     use_for_related_fields = True
+
     def get_query_set(self):
         return OccurrenceQuerySet(self.model)
-        
+
     def daily_occurrences(self, dt=None, event=None):
         return self.get_query_set().daily_occurrences(dt, event)
 
     def for_user(self, user):
         return self.get_query_set().for_user(user)
+
 
 #===============================================================================
 class Occurrence(models.Model):
@@ -290,7 +296,7 @@ def create_event(
     start_time=None,
     end_time=None,
     address='',
-    case = None,
+    case=None,
     **rrule_params
 ):
     '''
@@ -346,6 +352,7 @@ def create_event(
 def genslug():
     return ''.join(ICal_Calendar._random.choice(string.uppercase) for _ in range(32))
 
+
 class ICal_Calendar(models.Model):
     slug = models.CharField(max_length=32, primary_key=True, default=genslug)
     volunteer = models.ForeignKey(refugee_models.Volunteer)
@@ -374,6 +381,7 @@ class ICal_Calendar(models.Model):
     @classmethod
     def genwebcal(cls, request, everything=False):
         return cls.genurl(request, everything, protocol='webcal')
+
 
 # Doesn't actually seem to be called?
 @receiver(post_save, sender=User)

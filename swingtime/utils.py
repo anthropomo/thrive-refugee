@@ -1,7 +1,7 @@
 '''
 Common features and functions for swingtime
-
 '''
+
 from collections import defaultdict
 from datetime import datetime, date, time, timedelta
 import itertools
@@ -59,11 +59,11 @@ def css_class_cycler():
     from swingtime.models import EventType
     return defaultdict(
         lambda: itertools.cycle(('evt-even', 'evt-odd')).next,
-        ((e.abbr, itertools.cycle((
-             'evt-%s-even' % e.abbr,
-             'evt-%s-odd' % e.abbr
-             )).next) for e in EventType.objects.all()
-        )
+        ((e.abbr,
+          itertools.cycle(('evt-%s-even' % e.abbr,
+                           'evt-%s-odd' % e.abbr
+                           )).next) for e in EventType.objects.all()
+         )
     )
 
 
